@@ -1,0 +1,24 @@
+.navbar {
+  height: 10%;
+  display: flex;
+  justify-content: space-around;
+  background-color: aliceblue;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: black;
+}
+
+.navbar-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+.navbar ul {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
