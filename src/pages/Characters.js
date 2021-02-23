@@ -11,7 +11,6 @@ const Characters = (props) => {
             style={{ width: '200px', height: '200px' }}
             imageURL={char.imageURL}
             name={char.name}
-            formatName={props.formatName}
           />
         ))
       ) : (

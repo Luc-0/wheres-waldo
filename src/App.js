@@ -21,9 +21,7 @@ function App() {
         <Route
           exact
           path="/wheres-waldo/characters"
-          render={() => (
-            <Characters characters={characters} formatName={capitalizeString} />
-          )}
+          render={() => <Characters characters={characters} />}
         />
       </Router>
     </div>
@@ -38,10 +36,6 @@ function App() {
     });
 
     setCharacters(charactersData);
-  }
-
-  function capitalizeString(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 }
 

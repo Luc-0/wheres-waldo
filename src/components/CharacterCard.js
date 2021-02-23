@@ -1,11 +1,12 @@
 import React from 'react';
 import './CharacterCard.css';
+import utils from '../helpers/utils';
 
 const CharacterCard = (props) => {
   return (
     <div style={props.style ? props.style : null} className="character-card">
       <img src={props.imageURL} />
-      <p>{props.formatName ? props.formatName(props.name) : props.name}</p>
+      <p>{utils.capitalizeString(props.name)}</p>
     </div>
   );
 };
