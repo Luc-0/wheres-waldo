@@ -3,6 +3,7 @@
   display: flex;
   justify-content: space-around;
   background-color: aliceblue;
+  padding: 20px 0;
 }
 
 .navbar a {
