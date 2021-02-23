@@ -1,0 +1,19 @@
+.characters {
+  height: 90%;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.character-card {
+  text-align: center;
+  width: 200px;
+  height: 200px;
+}
+
+.character-card img {
+  max-width: 100%;
+  height: 100%;
+}
