@@ -60,9 +60,9 @@ const GameImage = (props) => {
   function handleOptionClick(e) {
     const optionValue = e.target.dataset.value;
 
-    props.handleCharacterPosition(imageClickPosition, optionValue);
     // If valid add circle around click position
-    if (props.isValidPosition(imageClickPosition)) {
+    if (props.isValidCharacterPosition(imageClickPosition, optionValue)) {
+      props.handleCharacterPosition(imageClickPosition, optionValue);
       addCircle(selectCirclePositionStyle);
     }
   }
