@@ -1,0 +1,16 @@
+.game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.find-character-container {
+  position: relative;
+
+  display: flex;
+  height: 100px;
+  width: 100%;
+  justify-content: space-evenly;
+  margin: 30px 0;
+}
