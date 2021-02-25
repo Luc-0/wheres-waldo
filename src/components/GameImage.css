@@ -1,0 +1,39 @@
+.wheres-waldo-img-container {
+  position: relative;
+  height: 50%;
+  width: 90%;
+}
+
+.wheres-waldo-img-container img {
+  max-width: 100%;
+  height: 100%;
+}
+
+.option-popup {
+  position: absolute;
+  height: 100px;
+  width: 10%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  background-color: black;
+  padding: 0 10px;
+  color: white;
+}
+
+.option-popup span {
+  width: 100%;
+  text-align: center;
+}
+
+.select-circle {
+  position: absolute;
+
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+  border: 3px dashed black;
+}
