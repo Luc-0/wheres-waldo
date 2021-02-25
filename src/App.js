@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
 import Characters from './pages/Characters';
+import Home from './pages/Home';
 import { firestore } from './services/firebase';
 
 const db = firestore();
@@ -18,6 +19,7 @@ function App() {
     <div className="app">
       <Router>
         <Navbar />
+        <Route exact path="/wheres-waldo" render={() => <Home />} />
         <Route
           exact
           path="/wheres-waldo/characters"
