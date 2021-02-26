@@ -3,7 +3,7 @@ import './GameImage.css';
 import utils from '../helpers/utils';
 
 const GameImage = (props) => {
-  const [isPopupOnScreen, setIsPopupOnScreen] = useState(true);
+  const [isPopupOnScreen, setIsPopupOnScreen] = useState(false);
   const [imageClickPosition, setImageClickPosition] = useState([0, 0]);
   const [imageCorrectCircles, setImageCorrectCircles] = useState([]);
 
@@ -69,6 +69,11 @@ const GameImage = (props) => {
 
   function handleImageClick(e) {
     const nativeEvent = e.nativeEvent;
+
+    // Return if has no more options to popup
+    if (!props.charactersName.length > 0) {
+      return;
+    }
 
     // Get click percentage location
     const offsetX = nativeEvent.offsetX;
