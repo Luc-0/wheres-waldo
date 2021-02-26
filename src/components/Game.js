@@ -12,6 +12,8 @@ const Game = (props) => {
   const [isFetchDone, setIsFetchDone] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [resetGameImage, setResetGameImage] = useState(false);
+  const [count, setCount] = useState(0);
+  const [isTimerOn, setIsTimerOn] = useState(false);
 
   // Fetch game data
   useEffect(() => {
@@ -41,14 +43,28 @@ const Game = (props) => {
   useEffect(() => {
     if (currentMissingNames && currentMissingNames.length === 0) {
       setIsGameOver(true);
+      stopTimer();
     }
   }, [currentMissingNames]);
+
+  // Update count if timer is on
+  useEffect(() => {
+    if (!isTimerOn) {
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setCount((c) => c + 1);
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, [isTimerOn, count]);
 
   return (
     <div>
       {currentGameData && currentMissingNames ? (
         <div className="game">
           <div className="game-menu">
+            <span>{formatTime(count)}</span>
             <button onClick={handleRestartGame}>Restart</button>
           </div>
           {!isGameOver ? (
@@ -103,9 +119,34 @@ const Game = (props) => {
   }
 
   function restartGame() {
+    resetCount();
+    startTimer();
     setCurrentMissingNames(getCurrentCharsName());
     setIsGameOver(false);
     setResetGameImage(true);
+  }
+
+  function startTimer() {
+    setIsTimerOn(true);
+  }
+
+  function stopTimer() {
+    setIsTimerOn(false);
+  }
+
+  function resetCount() {
+    setCount(0);
+  }
+
+  function formatTime(seconds) {
+    const newSeconds = seconds % 60;
+    const minutes = Math.floor(seconds / 60) % 60;
+
+    const formatMinutes = `${minutes < 10 ? `0${minutes}` : `${minutes}`}`;
+    const formatSeconds = `${
+      newSeconds < 10 ? `0${newSeconds}` : `${newSeconds}`
+    }`;
+    return `${formatMinutes}:${formatSeconds}`;
   }
 
   function isValidCharacterPosition(imageClickPosition, characterName) {
