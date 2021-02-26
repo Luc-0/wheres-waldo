@@ -39,13 +39,19 @@ const GameImage = (props) => {
       <img id={imageId} onClick={handleImageClick} src={props.imageURL} />
       <div
         style={
-          isPopupOnScreen ? selectCirclePositionStyle : { visibility: 'hidden' }
+          isPopupOnScreen
+            ? selectCirclePositionStyle
+            : { ...selectCirclePositionStyle, visibility: 'hidden' }
         }
         className="select-circle"
       ></div>
       {imageCorrectCircles}
       <div
-        style={isPopupOnScreen ? popupPositionStyle : { visibility: 'hidden' }}
+        style={
+          isPopupOnScreen
+            ? popupPositionStyle
+            : { ...popupPositionStyle, visibility: 'hidden' }
+        }
         className="option-popup"
       >
         {props.charactersName.map((charName) => (
