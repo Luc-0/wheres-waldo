@@ -34,6 +34,14 @@ const GameImage = (props) => {
     }
   });
 
+  useEffect(() => {
+    if (props.reset) {
+      clearCircles();
+      hidePopup();
+      props.handleReset();
+    }
+  }, [props.reset]);
+
   return (
     <div className="wheres-waldo-img-container">
       <img id={imageId} onClick={handleImageClick} src={props.imageURL} />
@@ -134,6 +142,10 @@ const GameImage = (props) => {
     newImageCorrectCircles.push(circle);
 
     setImageCorrectCircles(newImageCorrectCircles);
+  }
+
+  function clearCircles() {
+    setImageCorrectCircles([]);
   }
 
   function getPercentage(fromNumber, inNumber) {

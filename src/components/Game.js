@@ -10,6 +10,8 @@ const Game = (props) => {
   const [currentGameData, setCurrentGameData] = useState();
   const [currentMissingNames, setCurrentMissingNames] = useState();
   const [isFetchDone, setIsFetchDone] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [resetGameImage, setResetGameImage] = useState(false);
 
   // Fetch game data
   useEffect(() => {
@@ -35,28 +37,42 @@ const Game = (props) => {
     }
   }, [currentGameData]);
 
+  // Check if is gameover
+  useEffect(() => {
+    if (currentMissingNames && currentMissingNames.length === 0) {
+      setIsGameOver(true);
+    }
+  }, [currentMissingNames]);
+
   return (
     <div>
       {currentGameData && currentMissingNames ? (
         <div className="game">
-          <div className="find-character-container">
-            <span>Find:</span>
-            {characters.map((character) =>
-              currentMissingNames.includes(character.name) ? (
-                <CharacterCard
-                  name={character.name}
-                  imageURL={character.imageURL}
-                />
-              ) : (
-                false
-              )
-            )}
+          <div className="game-menu">
+            <button onClick={handleRestartGame}>Restart</button>
           </div>
+          {!isGameOver ? (
+            <div className="find-character-container">
+              <span>Find:</span>
+              {characters.map((character) =>
+                currentMissingNames.includes(character.name) ? (
+                  <CharacterCard
+                    name={character.name}
+                    imageURL={character.imageURL}
+                  />
+                ) : (
+                  false
+                )
+              )}
+            </div>
+          ) : null}
           <GameImage
             charactersName={currentMissingNames}
             imageURL={currentGameData.imageURL}
             handleCharacterPosition={handleCharacterPosition}
             isValidCharacterPosition={isValidCharacterPosition}
+            reset={resetGameImage}
+            handleReset={handleGameImageReset}
           />
         </div>
       ) : (
@@ -64,6 +80,14 @@ const Game = (props) => {
       )}
     </div>
   );
+
+  function handleRestartGame() {
+    restartGame();
+  }
+
+  function handleGameImageReset() {
+    setResetGameImage(false);
+  }
 
   function handleCharacterPosition(imageClickPosition, characterName) {
     if (isValidCharacterPosition(imageClickPosition, characterName)) {
@@ -76,6 +100,12 @@ const Game = (props) => {
 
       setCurrentMissingNames(newCurrMissingNames);
     }
+  }
+
+  function restartGame() {
+    setCurrentMissingNames(getCurrentCharsName());
+    setIsGameOver(false);
+    setResetGameImage(true);
   }
 
   function isValidCharacterPosition(imageClickPosition, characterName) {
