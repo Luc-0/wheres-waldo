@@ -3,6 +3,7 @@ import GameImage from './GameImage';
 import './Game.css';
 import { firestore } from '../services/firebase';
 import CharacterCard from '../components/CharacterCard';
+import Scoreboard from './Scoreboard';
 
 const Game = (props) => {
   const [characters, setCharacters] = useState([]);
@@ -14,6 +15,8 @@ const Game = (props) => {
   const [resetGameImage, setResetGameImage] = useState(false);
   const [count, setCount] = useState(0);
   const [isTimerOn, setIsTimerOn] = useState(false);
+  const [scoreboardOpen, setScoreboardOpen] = useState(false);
+  const [scoreboardNewScore, setScoreboardNewScore] = useState(false);
 
   // Fetch game data
   useEffect(() => {
@@ -36,14 +39,14 @@ const Game = (props) => {
   useEffect(() => {
     if (currentGameData) {
       setCurrentMissingNames(getCurrentCharsName());
+      startTimer();
     }
   }, [currentGameData]);
 
   // Check if is gameover
   useEffect(() => {
     if (currentMissingNames && currentMissingNames.length === 0) {
-      setIsGameOver(true);
-      stopTimer();
+      gameOver();
     }
   }, [currentMissingNames]);
 
@@ -61,6 +64,22 @@ const Game = (props) => {
 
   return (
     <div>
+      {scoreboardOpen ? (
+        <Scoreboard
+          scores={[
+            { name: 'luc', time: '00:06' },
+            { name: 'jef', time: '00:03' },
+            { name: 'loe', time: '01:29' },
+            { name: 'zoe', time: '02:06' },
+            { name: 'tuk', time: '22:16' },
+          ]}
+          inputTime={'01:12'}
+          handleCloseScoreboard={handleCloseScoreboard}
+          handleAddScore={handleAddScore}
+          newScore={scoreboardNewScore}
+        />
+      ) : null}
+
       {currentGameData && currentMissingNames ? (
         <div className="game">
           <div className="game-menu">
@@ -97,6 +116,15 @@ const Game = (props) => {
     </div>
   );
 
+  function handleCloseScoreboard() {
+    setScoreboardOpen(false);
+  }
+
+  function handleAddScore(name) {
+    // TODO: Add new score with name,time
+    // props.addScore(name, time, gameImageId)
+  }
+
   function handleRestartGame() {
     restartGame();
   }
@@ -118,12 +146,26 @@ const Game = (props) => {
     }
   }
 
+  function gameOver() {
+    setIsGameOver(true);
+    stopTimer();
+    setScoreboardOpen(true);
+
+    // TODO: Check if is a top 10 score
+    if (true) {
+      // Show scoreboard input for new score
+      setScoreboardNewScore(true);
+    }
+  }
+
   function restartGame() {
     resetCount();
     startTimer();
     setCurrentMissingNames(getCurrentCharsName());
     setIsGameOver(false);
     setResetGameImage(true);
+    setScoreboardOpen(false);
+    setScoreboardNewScore(false);
   }
 
   function startTimer() {
