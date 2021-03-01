@@ -5,7 +5,10 @@ import Game from '../components/Game';
 const Home = (props) => {
   return (
     <div className="home-page">
-      <Game />
+      <Game
+        scoreboards={props.scoreboards}
+        handleAddScore={props.handleAddScore}
+      />
     </div>
   );
 };

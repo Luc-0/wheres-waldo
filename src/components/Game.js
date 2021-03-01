@@ -17,6 +17,7 @@ const Game = (props) => {
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [scoreboardOpen, setScoreboardOpen] = useState(false);
   const [scoreboardNewScore, setScoreboardNewScore] = useState(false);
+  const [currentScoreboard, setCurrentScoreboard] = useState();
 
   // Fetch game data
   useEffect(() => {
@@ -39,9 +40,17 @@ const Game = (props) => {
   useEffect(() => {
     if (currentGameData) {
       setCurrentMissingNames(getCurrentCharsName());
+      setCurrentScoreboard(getCurrentScoreboard(currentGameData.id));
       startTimer();
     }
   }, [currentGameData]);
+
+  // Scoreboard update
+  useEffect(() => {
+    if (currentScoreboard) {
+      setCurrentScoreboard(getCurrentScoreboard(currentScoreboard.id));
+    }
+  }, [props.scoreboards]);
 
   // Check if is gameover
   useEffect(() => {
@@ -66,14 +75,9 @@ const Game = (props) => {
     <div>
       {scoreboardOpen ? (
         <Scoreboard
-          scores={[
-            { name: 'luc', time: '00:06' },
-            { name: 'jef', time: '00:03' },
-            { name: 'loe', time: '01:29' },
-            { name: 'zoe', time: '02:06' },
-            { name: 'tuk', time: '22:16' },
-          ]}
-          inputTime={'01:12'}
+          scores={currentScoreboard.scores}
+          inputTime={count}
+          formatTime={formatTime}
           handleCloseScoreboard={handleCloseScoreboard}
           handleAddScore={handleAddScore}
           newScore={scoreboardNewScore}
@@ -123,6 +127,8 @@ const Game = (props) => {
   function handleAddScore(name) {
     // TODO: Add new score with name,time
     // props.addScore(name, time, gameImageId)
+    setScoreboardNewScore(false);
+    props.handleAddScore(name, count, currentScoreboard.id);
   }
 
   function handleRestartGame() {
@@ -151,11 +157,23 @@ const Game = (props) => {
     stopTimer();
     setScoreboardOpen(true);
 
-    // TODO: Check if is a top 10 score
-    if (true) {
+    // Check if is a top 10 score
+    if (checkScoreTime(count)) {
       // Show scoreboard input for new score
       setScoreboardNewScore(true);
     }
+  }
+
+  function checkScoreTime(seconds) {
+    if (currentScoreboard.scores.length === 0) {
+      return true;
+    }
+
+    if (currentScoreboard.scores.length >= 10) {
+      return currentScoreboard.scores.some((score) => score.time > seconds);
+    }
+
+    return true;
   }
 
   function restartGame() {
@@ -221,6 +239,19 @@ const Game = (props) => {
     ].map((char) => char.name.toLowerCase());
 
     return currentCharactersName;
+  }
+
+  function getCurrentScoreboard(scoreboardId) {
+    const defaultScoreboard = { id: scoreboardId, scores: [] };
+    if (!props.scoreboards || props.scoreboards.length === 0) {
+      return defaultScoreboard;
+    }
+
+    const scoreboard = props.scoreboards.find(
+      (scoreboard) => scoreboard.id === scoreboardId
+    );
+
+    return scoreboard ? scoreboard : defaultScoreboard;
   }
 
   async function fetchCharacters() {

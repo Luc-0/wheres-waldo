@@ -21,7 +21,9 @@ export default function Scoreboard(props) {
               <div className="scoreboard-score">
                 <span>{index + 1}</span>
                 <span>{score.name}</span>
-                <span>{score.time}</span>
+                <span>
+                  {props.formatTime ? props.formatTime(score.time) : score.time}
+                </span>
               </div>
             );
           })
@@ -29,7 +31,11 @@ export default function Scoreboard(props) {
 
       {props.newScore ? (
         <div className="scoreboard-add-score">
-          <span>{props.inputTime}</span>
+          <span>
+            {props.formatTime
+              ? props.formatTime(props.inputTime)
+              : props.inputTime}
+          </span>
           <label htmlFor="score-input">Name</label>
           <input
             id="score-input"
