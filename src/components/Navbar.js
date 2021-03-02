@@ -14,9 +14,6 @@ const Navbar = () => {
         <li>
           <Link to="/wheres-waldo/characters">Characters</Link>
         </li>
-        <li>
-          <Link to="/wheres-waldo/about">About</Link>
-        </li>
       </ul>
     </nav>
   );
