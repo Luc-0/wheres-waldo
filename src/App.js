@@ -26,7 +26,7 @@ function App() {
           <Navbar />
           <Route
             exact
-            path="/wheres-waldo"
+            path="/"
             render={() => (
               <Home
                 characters={characters}
@@ -38,7 +38,7 @@ function App() {
           />
           <Route
             exact
-            path="/wheres-waldo/characters"
+            path="/characters"
             render={() => <Characters characters={characters} />}
           />
         </Router>
@@ -53,8 +53,6 @@ function App() {
     charactersDocuments.forEach((doc) => {
       charactersData.push(doc.data());
     });
-    console.log('fetch characters');
-
     setCharacters(charactersData);
   }
 
@@ -67,7 +65,6 @@ function App() {
     imagesDocuments.forEach((doc) => {
       imagesDetailsData.push({ id: doc.id, ...doc.data() });
     });
-    console.log('fetch images');
     setImagesDetails(imagesDetailsData);
   }
 
@@ -88,8 +85,6 @@ function App() {
             id: doc.id,
             scores: doc.data().scores ? sortScores(doc.data().scores) : [],
           };
-
-          console.log('snapshot scoreboards');
           setScoreboards(newScoreboards);
         });
 
@@ -100,7 +95,6 @@ function App() {
         scores: docData.scores ? sortScores(doc.data().scores) : [],
       });
     });
-    console.log('fetch scoreboards');
     setScoreboards(scoreboards);
   }
 
