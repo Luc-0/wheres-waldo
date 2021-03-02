@@ -76,6 +76,9 @@ const Game = (props) => {
           <div className="game-menu">
             <span>{formatTime(count)}</span>
             <button onClick={handleRestartGame}>Restart</button>
+            <button onClick={() => setScoreboardOpen(!scoreboardOpen)}>
+              Scoreboard
+            </button>
           </div>
           {!isGameOver ? (
             <div className="find-character-container">
