@@ -11,29 +11,38 @@ const db = firestore();
 function App() {
   const [characters, setCharacters] = useState([]);
   const [scoreboards, setScoreboards] = useState([]);
+  const [imagesDetails, setImagesDetails] = useState([]);
 
   useEffect(() => {
     fetchCharacters();
+    fetchImagesDetails();
     loadScoreboards();
   }, []);
 
   return (
     <div className="app">
-      <Router>
-        <Navbar />
-        <Route
-          exact
-          path="/wheres-waldo"
-          render={() => (
-            <Home scoreboards={scoreboards} handleAddScore={handleAddScore} />
-          )}
-        />
-        <Route
-          exact
-          path="/wheres-waldo/characters"
-          render={() => <Characters characters={characters} />}
-        />
-      </Router>
+      {imagesDetails.length > 0 && characters.length > 0 ? (
+        <Router>
+          <Navbar />
+          <Route
+            exact
+            path="/wheres-waldo"
+            render={() => (
+              <Home
+                characters={characters}
+                imagesDetails={imagesDetails}
+                scoreboards={scoreboards}
+                handleAddScore={handleAddScore}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/wheres-waldo/characters"
+            render={() => <Characters characters={characters} />}
+          />
+        </Router>
+      ) : null}
     </div>
   );
 
@@ -44,8 +53,22 @@ function App() {
     charactersDocuments.forEach((doc) => {
       charactersData.push(doc.data());
     });
+    console.log('fetch characters');
 
     setCharacters(charactersData);
+  }
+
+  async function fetchImagesDetails() {
+    const imagesDetailsData = [];
+
+    const imagesDocuments = await firestore()
+      .collection('images-details')
+      .get();
+    imagesDocuments.forEach((doc) => {
+      imagesDetailsData.push({ id: doc.id, ...doc.data() });
+    });
+    console.log('fetch images');
+    setImagesDetails(imagesDetailsData);
   }
 
   async function loadScoreboards() {

@@ -6,11 +6,8 @@ import CharacterCard from '../components/CharacterCard';
 import Scoreboard from './Scoreboard';
 
 const Game = (props) => {
-  const [characters, setCharacters] = useState([]);
-  const [imagesDetails, setImagesDetails] = useState([]);
   const [currentGameData, setCurrentGameData] = useState();
   const [currentMissingNames, setCurrentMissingNames] = useState();
-  const [isFetchDone, setIsFetchDone] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [resetGameImage, setResetGameImage] = useState(false);
   const [count, setCount] = useState(0);
@@ -19,25 +16,15 @@ const Game = (props) => {
   const [scoreboardNewScore, setScoreboardNewScore] = useState(false);
   const [currentScoreboard, setCurrentScoreboard] = useState();
 
-  // Fetch game data
+  // Set default game image
   useEffect(() => {
-    loadGame();
-
-    async function loadGame() {
-      await fetchCharacters();
-      await fetchImagesDetails();
-      setIsFetchDone(true);
+    if (props.imagesDetails.length > 0) {
+      setCurrentGameData(props.imagesDetails[0]);
     }
   }, []);
 
-  // Set default game image
   useEffect(() => {
-    if (imagesDetails.length > 0) {
-      setCurrentGameData(imagesDetails[0]);
-    }
-  }, [isFetchDone]);
-
-  useEffect(() => {
+    // Set game configuration on current game data change
     if (currentGameData) {
       setCurrentMissingNames(getCurrentCharsName());
       setCurrentScoreboard(getCurrentScoreboard(currentGameData.id));
@@ -93,7 +80,7 @@ const Game = (props) => {
           {!isGameOver ? (
             <div className="find-character-container">
               <span>Find:</span>
-              {characters.map((character) =>
+              {props.characters.map((character) =>
                 currentMissingNames.includes(character.name) ? (
                   <CharacterCard
                     name={character.name}
@@ -252,33 +239,6 @@ const Game = (props) => {
     );
 
     return scoreboard ? scoreboard : defaultScoreboard;
-  }
-
-  async function fetchCharacters() {
-    const charactersData = [];
-
-    const charactersDocuments = await firestore()
-      .collection('characters')
-      .get();
-    charactersDocuments.forEach((doc) => {
-      charactersData.push(doc.data());
-    });
-    console.log('fetch characters');
-
-    setCharacters(charactersData);
-  }
-
-  async function fetchImagesDetails() {
-    const imagesDetailsData = [];
-
-    const imagesDocuments = await firestore()
-      .collection('images-details')
-      .get();
-    imagesDocuments.forEach((doc) => {
-      imagesDetailsData.push({ id: doc.id, ...doc.data() });
-    });
-    console.log('fetch images');
-    setImagesDetails(imagesDetailsData);
   }
 };
 

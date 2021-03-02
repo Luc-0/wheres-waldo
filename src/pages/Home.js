@@ -6,6 +6,8 @@ const Home = (props) => {
   return (
     <div className="home-page">
       <Game
+        characters={props.characters}
+        imagesDetails={props.imagesDetails}
         scoreboards={props.scoreboards}
         handleAddScore={props.handleAddScore}
       />
