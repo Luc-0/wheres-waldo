@@ -15,6 +15,7 @@ const Game = (props) => {
   const [scoreboardOpen, setScoreboardOpen] = useState(false);
   const [scoreboardNewScore, setScoreboardNewScore] = useState(false);
   const [currentScoreboard, setCurrentScoreboard] = useState();
+  const [changeImageOpen, setChangeImageOpen] = useState(false);
 
   // Set default game image
   useEffect(() => {
@@ -73,11 +74,31 @@ const Game = (props) => {
 
       {currentGameData && currentMissingNames ? (
         <div className="game">
+          {changeImageOpen ? (
+            <div className="game-change-image">
+              {props.imagesDetails.map((imageDetail, index) => (
+                <div className="change-image-container">
+                  <img
+                    onClick={handleChangeImage}
+                    data-index={index}
+                    src={imageDetail.imageURL}
+                  />
+                </div>
+              ))}
+              <span>Change Image</span>
+
+              <button onClick={() => setChangeImageOpen(false)}>X</button>
+            </div>
+          ) : null}
+
           <div className="game-menu">
             <span>{formatTime(count)}</span>
             <button onClick={handleRestartGame}>Restart</button>
             <button onClick={() => setScoreboardOpen(!scoreboardOpen)}>
               Scoreboard
+            </button>
+            <button onClick={() => setChangeImageOpen(!changeImageOpen)}>
+              Change Image
             </button>
           </div>
           {!isGameOver ? (
@@ -109,6 +130,13 @@ const Game = (props) => {
       )}
     </div>
   );
+
+  function handleChangeImage(e) {
+    const selectedImageIndex = +e.target.dataset.index;
+    setCurrentGameData(props.imagesDetails[selectedImageIndex]);
+    setChangeImageOpen(false);
+    restartGame();
+  }
 
   function handleCloseScoreboard() {
     setScoreboardOpen(false);
