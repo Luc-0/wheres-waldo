@@ -103,7 +103,6 @@ const GameImage = (props) => {
     setSelectCirclePositionStyle({
       top: `${yPercentage}%`,
       left: `${xPercentage}%`,
-      transform: `translate(-${xPercentage}%, -${yPercentage}%)`,
     });
   }
 

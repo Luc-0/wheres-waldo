@@ -36,4 +36,5 @@
 
   border-radius: 50%;
   border: 3px dashed black;
+  transform: translate(-50%, -50%);
 }
