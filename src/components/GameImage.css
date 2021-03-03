@@ -11,7 +11,6 @@
 
 .option-popup {
   position: absolute;
-  height: 100px;
   width: 10%;
 
   display: flex;
@@ -19,13 +18,15 @@
   justify-content: space-evenly;
 
   background-color: black;
-  padding: 0 10px;
+  padding: 10px;
   color: white;
 }
 
 .option-popup span {
+  margin: 5px 0;
   width: 100%;
   text-align: center;
+  cursor: pointer;
 }
 
 .select-circle {
